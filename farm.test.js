@@ -1,4 +1,4 @@
-const { getYieldForPlant, getYieldForCrop, getTotalYield } = require("./farm");
+const { getYieldForPlant, getYieldForCrop, getTotalYield, getCostsForCrop,getRevenueForCrop, getProfitForCrop, getTotalProfitForCrops } = require("./farm");
 
 describe("getYieldForPlant", () => {
     const corn = {
@@ -49,5 +49,81 @@ describe("getTotalYield", () => {
         };
         const crops = [{ crop: corn, numCrops: 0 }];
         expect(getTotalYield({ crops })).toBe(0);
+    });
+});
+
+describe("getCostsForCrop", () => {
+    const corn = {
+        costPerSeed: 1,
+        totalPlanted: 200
+    };
+
+    const input = {
+        crop: corn,
+        numCrops: 10,
+    };
+
+    test("Get cost for crop with no environment factors", () => {
+        expect(getCostsForCrop(input)).toBe(2000);
+    });
+});
+
+describe("getRevenueForCrop", () => {
+    const corn = {
+        name: "corn",
+        yield: 3,
+        sellingPrice: 6
+    };
+    const input = {
+        crop: corn,
+        numCrops: 10,
+    };
+
+    test("Get revenue for crop with no environment factors", () => {
+        expect(getRevenueForCrop(input)).toBe(1800);
+    });
+});
+
+describe("getProfitForCrop", () => {
+    const corn = {
+        name: "corn",
+        yield: 3,
+        sellingPrice: 10,
+        costPerSeed: 1,
+        totalPlanted: 200,
+    };
+
+    const input = {
+        crop: corn,
+        numCrops: 10,
+    };
+
+    test("Get profit for crop with no environment factors", () => {
+        expect(getProfitForCrop(input)).toBe(1000);
+    });
+});
+
+describe("getTotalProfitForCrops", () => {
+    const corn = {
+        name: "corn",
+        yield: 3,
+        sellingPrice: 10,
+        costPerSeed: 1,
+        totalPlanted: 200,
+    };
+    const pumpkin = {
+        name: "pumpkin",
+        yield: 5,
+        sellingPrice: 5,
+        costPerSeed: 1,
+        totalPlanted: 100,
+    };
+    const crops = [
+        { crop: corn, numCrops: 5 },
+        { crop: pumpkin, numCrops: 2 },
+    ];
+
+    test("Get total profit for crops with no environment factors", () => {
+        expect(getTotalProfitForCrops({ crops })).toBe(-350);
     });
 });
